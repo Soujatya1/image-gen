@@ -1,7 +1,7 @@
 import streamlit as st 
 from dotenv import load_dotenv
 import os 
-import openai
+#import openai
 from diffusers import StableDiffusionPipeline
 import torch
 
