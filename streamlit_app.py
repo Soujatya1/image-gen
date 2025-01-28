@@ -1,5 +1,4 @@
 import streamlit as st
-import openrouter
 import requests
 
 # Streamlit App
@@ -16,38 +15,49 @@ if st.button("Generate Poster"):
     if description:
         st.write("Generating the poster using OpenRouter LLM...")
 
-        # Initialize OpenRouter ChatCompletion
-        api_key = "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"
-        client = openrouter.Client(api_key=api_key)
+        # OpenRouter API details
+        api_key = "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"  # Replace with your OpenRouter API key
+        api_url = "https://openrouter.ai/api/v1/completion"  # Base endpoint for OpenRouter
+
+        # Create the prompt
+        text_prompt = (
+            f"Generate a marketing poster in {style.lower()} style. "
+            f"Description: {description}. Ensure the dimensions are {dimensions}. "
+            f"Return the image URL."
+        )
+
+        # Set up request headers and body
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        }
+        payload = {
+            "model": "deepseek/deepseek-r1-distill-llama-70b",  # Replace with the correct model
+            "messages": [
+                {"role": "system", "content": "You are an AI that generates marketing posters."},
+                {"role": "user", "content": text_prompt},
+            ],
+        }
 
         try:
-            # Create the prompt for the OpenRouter model
-            text_prompt = (
-                f"Generate a marketing poster in {style.lower()} style. "
-                f"Description: {description}. Ensure the dimensions are {dimensions}. "
-                f"Return an image URL."
-            )
+            # Send POST request to OpenRouter API
+            response = requests.post(api_url, json=payload, headers=headers)
 
-            # Send the request to OpenRouter
-            response = client.completion(
-                model="deepseek/deepseek-r1-distill-llama-70b",
-                messages=[
-                    {"role": "system", "content": "You are an AI that generates images for marketing posters."},
-                    {"role": "user", "content": text_prompt},
-                ]
-            )
+            # Handle response
+            if response.status_code == 200:
+                result = response.json()
+                st.write("OpenRouter Response:", result)
 
-            # Debug the response
-            st.write("OpenRouter Response:", response)
-
-            # Check for image URL in the response
-            if "choices" in response and response["choices"]:
-                image_url = response["choices"][0]["message"]["content"]
-                st.image(image_url, caption="Generated Marketing Poster")
-                st.download_button("Download Poster", image_url)
+                # Extract image URL if available
+                if "choices" in result and result["choices"]:
+                    image_url = result["choices"][0]["message"]["content"]
+                    st.image(image_url, caption="Generated Marketing Poster")
+                    st.download_button("Download Poster", image_url)
+                else:
+                    st.error("No image URL found in the response.")
             else:
-                st.error("Failed to retrieve an image URL from the OpenRouter response.")
+                st.error(f"API call failed with status code {response.status_code}: {response.text}")
         except Exception as e:
-            st.error(f"Error during generation: {e}")
+            st.error(f"An error occurred: {e}")
     else:
         st.warning("Please enter a description for the poster.")
