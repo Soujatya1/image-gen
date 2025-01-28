@@ -4,3 +4,4 @@ openrouter
 diffusers
 dotenv
 torch
+huggingface-hub
