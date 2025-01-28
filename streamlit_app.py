@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain.llms import GroqCloud
+from langchain_groq import GroqCloud
 
 # Streamlit App
 st.title("AI-Powered Marketing Poster Generator")
