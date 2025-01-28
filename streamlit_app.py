@@ -2,17 +2,16 @@ import streamlit as st
 import requests
 from diffusers import StableDiffusionPipeline
 import torch
-from dotenv import load_dotenv
-from huggingface_hub import HfFolder, hf_hub_download  # Use hf_hub_download instead of cached_download
 
 # Streamlit App
 st.title("AI-Powered Marketing Poster Generator")
 
 def generate_images_using_huggingface_diffusers(text):
+    # Directly load the model from Huggingface Hub
     pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
-    pipe = pipe.to("cuda")
+    pipe = pipe.to("cuda")  # Ensure it's using GPU if available
     prompt = text
-    image = pipe(prompt).images[0] 
+    image = pipe(prompt).images[0]
     return image
 
 if 'Home' == "Home":
