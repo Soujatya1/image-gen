@@ -29,7 +29,7 @@ if st.button("Generate Poster"):
 
         # Pass the prompt directly to GroqCloud
         try:
-            response = groqcloud_llm.generate(prompt)
+            response = groqcloud_llm.chat(prompt)
             # Check if the response includes an image URL
             if isinstance(response, dict) and "image_url" in response:
                 st.image(response["image_url"], caption="Generated Marketing Poster")
