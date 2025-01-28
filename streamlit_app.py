@@ -5,6 +5,7 @@ import os
 from diffusers import StableDiffusionPipeline
 import torch
 import transformers
+import accelerate
 
 load_dotenv()
 #openai.api_key = os.getenv("OPENAI_API_KEY")
