@@ -1,2 +1,2 @@
 streamlit
-pandas
+langchain_groq
