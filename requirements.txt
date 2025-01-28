@@ -5,3 +5,4 @@ torch
 diffusers
 huggingface-hub
 python-dotenv
+transformers
