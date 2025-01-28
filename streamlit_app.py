@@ -8,7 +8,7 @@ st.title("AI-Powered Marketing Poster Generator")
 def generate_images_using_huggingface_diffusers(text):
     # Load the pre-trained model directly from diffusers
     pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5")
-    pipe = pipe.to("cuda")  # Ensure it's using GPU if available
+    #pipe = pipe.to("cuda")  # Ensure it's using GPU if available
 
     # Generate the image based on the text prompt
     prompt = text
