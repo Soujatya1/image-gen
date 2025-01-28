@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain_groq import GroqCloud
+from langchain_groq import ChatGroq
 
 # Streamlit App
 st.title("AI-Powered Marketing Poster Generator")
@@ -16,7 +16,7 @@ if st.button("Generate Poster"):
         st.write("Generating the poster using GroqCloud LLM...")
 
         # Initialize GroqCloud LLM
-        groqcloud_llm = GroqCloud(api_key="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")
+        groqcloud_llm = ChatGroq(api_key="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", model_name="Llama3-70b-8192")
 
         # Pass input directly to GroqCloud for image generation
         response = groqcloud_llm.generate({
