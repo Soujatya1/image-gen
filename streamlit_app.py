@@ -1,38 +1,52 @@
 import streamlit as st
-from langchain_groq import ChatGroq
+from openrouter import ChatCompletion
+import requests
 
 # Streamlit App
 st.title("AI-Powered Marketing Poster Generator")
-st.write("Generate stunning marketing posters using GroqCloud's LLM.")
+st.write("Generate stunning marketing posters using OpenRouter's LLM.")
 
 # User Inputs
 description = st.text_area("Enter a description for your poster:")
-#style = st.selectbox("Choose a style:", ["Minimalistic", "Modern", "Vintage", "Creative"])
-#dimensions = st.text_input("Enter dimensions (e.g., 1024x1024):", "1024x1024")
+style = st.selectbox("Choose a style:", ["Minimalistic", "Modern", "Vintage", "Creative"])
+dimensions = st.text_input("Enter dimensions (e.g., 1024x1024):", "1024x1024")
 
 # Generate Poster
 if st.button("Generate Poster"):
     if description:
-        st.write("Generating the poster using GroqCloud LLM...")
+        st.write("Generating the poster using OpenRouter LLM...")
 
-        # Initialize GroqCloud LLM
-        groqcloud_llm = ChatGroq(
-            api_key="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", 
-            model_name="Llama3-70b-8192"
-        )
+        # Initialize OpenRouter ChatCompletion
+        api_key = "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"
+        client = ChatCompletion(api_key=api_key)
 
-        # Create a combined text prompt
-        prompt = f"Create a marketing poster using Description: {description}."
-
-        # Pass the prompt directly to GroqCloud
         try:
-            response = groqcloud_llm.image_generation(prompt)
-            # Check if the response includes an image URL
-            if isinstance(response, dict) and "image_url" in response:
-                st.image(response["image_url"], caption="Generated Marketing Poster")
-                st.download_button("Download Poster", response["image_url"])
+            # Create the prompt for the OpenRouter model
+            text_prompt = (
+                f"Generate a marketing poster in {style.lower()} style. "
+                f"Description: {description}. Ensure the dimensions are {dimensions}. "
+                f"Return an image URL."
+            )
+
+            # Send the request to OpenRouter
+            response = client.create(
+                model="deepseek/deepseek-r1-distill-llama-70b",
+                messages=[
+                    {"role": "system", "content": "You are an AI that generates images for marketing posters."},
+                    {"role": "user", "content": text_prompt},
+                ]
+            )
+
+            # Debug the response
+            st.write("OpenRouter Response:", response)
+
+            # Check for image URL in the response
+            if "choices" in response and response["choices"]:
+                image_url = response["choices"][0]["message"]["content"]
+                st.image(image_url, caption="Generated Marketing Poster")
+                st.download_button("Download Poster", image_url)
             else:
-                st.error("Failed to generate the image. Please check the response format.")
+                st.error("Failed to retrieve an image URL from the OpenRouter response.")
         except Exception as e:
             st.error(f"Error during generation: {e}")
     else:
