@@ -15,12 +15,12 @@ def generate_images_using_huggingface_diffusers(text):
     image = pipe(prompt).images[0] 
     return image
 
-if choice == "Home":
+if 'Home' == "Home":
     st.title("AI Image Generation App")
     with st.expander("About the App"):
         st.write("This is a simple image generation app that uses AI to generates images from text prompt.")
 
-elif choice == "Huggingface Diffusers":
+elif 'Huggingface Diffusers' == "Huggingface Diffusers":
     st.subheader("Image generation using Huggingface Diffusers")
     input_prompt = st.text_input("Enter your text prompt")
     if input_prompt is not None:
