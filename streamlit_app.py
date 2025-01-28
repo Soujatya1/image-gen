@@ -17,7 +17,7 @@ if st.button("Generate Poster"):
 
         # OpenRouter API details
         api_key = "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"  # Replace with your OpenRouter API key
-        api_url = "https://openrouter.ai/api/v1/completion"  # Base endpoint for OpenRouter
+        api_url = "https://openrouter.ai/api/v1/chat/completions"  # Base endpoint for OpenRouter
 
         # Create the prompt
         text_prompt = (
