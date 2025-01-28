@@ -1,5 +1,5 @@
 import streamlit as st
-from openrouter import ChatCompletion
+import openrouter
 import requests
 
 # Streamlit App
