@@ -4,6 +4,7 @@ from diffusers import StableDiffusionPipeline
 import torch
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
+from huggingface_hub import HfFolder, cached_download, hf_hub_download
 
 # Streamlit App
 st.title("AI-Powered Marketing Poster Generator")
