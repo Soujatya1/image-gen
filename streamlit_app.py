@@ -29,7 +29,7 @@ if st.button("Generate Poster"):
             )
 
             # Send the request to OpenRouter
-            response = client.create(
+            response = client.Client(
                 model="deepseek/deepseek-r1-distill-llama-70b",
                 messages=[
                     {"role": "system", "content": "You are an AI that generates images for marketing posters."},
