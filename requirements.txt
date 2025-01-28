@@ -1,3 +1,6 @@
 streamlit
 langchain_groq
 openrouter
+diffusers
+dotenv
+torch
