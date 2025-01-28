@@ -7,8 +7,8 @@ st.write("Generate stunning marketing posters using GroqCloud's LLM.")
 
 # User Inputs
 description = st.text_area("Enter a description for your poster:")
-style = st.selectbox("Choose a style:", ["Minimalistic", "Modern", "Vintage", "Creative"])
-dimensions = st.text_input("Enter dimensions (e.g., 1024x1024):", "1024x1024")
+#style = st.selectbox("Choose a style:", ["Minimalistic", "Modern", "Vintage", "Creative"])
+#dimensions = st.text_input("Enter dimensions (e.g., 1024x1024):", "1024x1024")
 
 # Generate Poster
 if st.button("Generate Poster"):
@@ -22,7 +22,7 @@ if st.button("Generate Poster"):
         )
 
         # Create a combined text prompt
-        prompt = f"Create a {style.lower()} marketing poster. Description: {description}. Dimensions: {dimensions}."
+        prompt = f"Create a marketing poster using Description: {description}."
 
         # Pass the prompt directly to GroqCloud
         try:
