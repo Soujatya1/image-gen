@@ -6,3 +6,4 @@ diffusers
 huggingface-hub
 python-dotenv
 transformers
+accelerate
