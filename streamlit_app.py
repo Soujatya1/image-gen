@@ -18,7 +18,7 @@ if st.button("Generate Poster"):
 
         # Initialize OpenRouter ChatCompletion
         api_key = "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"
-        client = ChatCompletion(api_key=api_key)
+        client = openrouter.Client(api_key=api_key)
 
         try:
             # Create the prompt for the OpenRouter model
@@ -29,7 +29,7 @@ if st.button("Generate Poster"):
             )
 
             # Send the request to OpenRouter
-            response = client.Client(
+            response = client.completion(
                 model="deepseek/deepseek-r1-distill-llama-70b",
                 messages=[
                     {"role": "system", "content": "You are an AI that generates images for marketing posters."},
