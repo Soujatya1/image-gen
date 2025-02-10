@@ -2,7 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv
 import os
 import diffusers
-from diffusers import DiffusionPipeline, Lumina2Text2ImgPipeline
+from diffusers import DiffusionPipeline
 import torch
 import transformers
 import accelerate
