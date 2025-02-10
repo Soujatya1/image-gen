@@ -1,6 +1,7 @@
 import streamlit as st 
 from dotenv import load_dotenv
-import os 
+import os
+import diffusers
 from diffusers import StableDiffusionPipeline, Lumina2Text2ImgPipeline
 import torch
 import transformers
