@@ -2,7 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv
 import os
 import diffusers
-from diffusers import StableDiffusionPipeline, Lumina2Text2ImgPipeline
+from diffusers import DiffusionPipeline, Lumina2Text2ImgPipeline
 import torch
 import transformers
 import accelerate
@@ -24,7 +24,7 @@ def generate_images_using_huggingface_diffusers(text):
 
 # Function to generate AI images using Lumina-2
 def generate_images_using_lumina2(text):
-    pipe = Lumina2Text2ImgPipeline.from_pretrained("Alpha-VLLM/Lumina-Image-2.0", torch_dtype=torch.bfloat16)
+    pipe = DiffusionPipeline.from_pretrained("Alpha-VLLM/Lumina-Image-2.0", torch_dtype=torch.bfloat16)
     pipe.enable_model_cpu_offload()  # Offload model to CPU if GPU memory is limited
     image = pipe(
         text,
