@@ -3,31 +3,25 @@ from dotenv import load_dotenv
 import os
 import torch
 from transformers import AutoProcessor, AutoModel
+from diffusers import DiffusionPipeline
 
 load_dotenv()
 
-# Load Lumina-2 Model Once to Avoid Reloading on Every Request
-@st.cache_resource
-def load_lumina2_model():
-    model_id = "Alpha-VLLM/Lumina-Image-2.0"
-    processor = AutoProcessor.from_pretrained(model_id)
-    model = AutoModel.from_pretrained(model_id, torch_dtype=torch.bfloat16)
-    return processor, model
-
-processor, model = load_lumina2_model()
-
 # Function to Generate AI Images Using Lumina-2
 def generate_images_using_lumina2(text):
-    input_ids = processor(text, return_tensors="pt").input_ids
-    output = model.generate(
-        input_ids=input_ids,
+    pipe = DiffusionPipeline.from_pretrained("Alpha-VLLM/Lumina-Image-2.0")
+    pipe.enable_model_cpu_offload()  # Offload model to CPU if GPU memory is limited
+    image = pipe(
+        text,
         height=1024,
         width=1024,
         guidance_scale=4.0,
-        num_inference_steps=50
-    )
-    image = processor.post_process(output)
-    return image[0]
+        num_inference_steps=50,
+        cfg_trunc_ratio=0.25,
+        cfg_normalization=True,
+        generator=torch.Generator("cpu").manual_seed(0)
+    ).images[0]
+    return image
 
 # Streamlit UI
 choice = st.sidebar.selectbox("Select your choice", ["Home", "Lumina-2"])
