@@ -4,21 +4,14 @@ import os
 import diffusers
 from diffusers import DiffusionPipeline
 import torch
-import transformers
+from transformers import AutoProcessor, AutoModel
 import accelerate
-
-model_id = "Alpha-VLLM/Lumina-Image-2.0"
-try:
-    pipe = DiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.bfloat16)
-    print("Model loaded successfully!")
-except Exception as e:
-    print(f"Error loading model: {e}")
 
 load_dotenv()
 
 # Function to generate AI images using Lumina-2
 def generate_images_using_lumina2(text):
-    pipe = DiffusionPipeline.from_pretrained("Alpha-VLLM/Lumina-Image-2.0", torch_dtype=torch.bfloat16)
+    pipe = AutoProcessor.from_pretrained("Alpha-VLLM/Lumina-Image-2.0", torch_dtype=torch.bfloat16)
     pipe.enable_model_cpu_offload()
     image = pipe(
         text,
