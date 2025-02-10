@@ -1,29 +1,33 @@
-import streamlit as st 
+import streamlit as st
 from dotenv import load_dotenv
 import os
-import diffusers
-from diffusers import DiffusionPipeline
 import torch
 from transformers import AutoProcessor, AutoModel
-import accelerate
 
 load_dotenv()
 
-# Function to generate AI images using Lumina-2
+# Load Lumina-2 Model Once to Avoid Reloading on Every Request
+@st.cache_resource
+def load_lumina2_model():
+    model_id = "Alpha-VLLM/Lumina-Image-2.0"
+    processor = AutoProcessor.from_pretrained(model_id)
+    model = AutoModel.from_pretrained(model_id, torch_dtype=torch.bfloat16)
+    return processor, model
+
+processor, model = load_lumina2_model()
+
+# Function to Generate AI Images Using Lumina-2
 def generate_images_using_lumina2(text):
-    pipe = AutoProcessor.from_pretrained("Alpha-VLLM/Lumina-Image-2.0", torch_dtype=torch.bfloat16)
-    pipe.enable_model_cpu_offload()
-    image = pipe(
-        text,
+    input_ids = processor(text, return_tensors="pt").input_ids
+    output = model.generate(
+        input_ids=input_ids,
         height=1024,
         width=1024,
         guidance_scale=4.0,
-        num_inference_steps=50,
-        cfg_trunc_ratio=0.25,
-        cfg_normalization=True,
-        generator=torch.Generator("cpu").manual_seed(0)
-    ).images[0]
-    return image
+        num_inference_steps=50
+    )
+    image = processor.post_process(output)
+    return image[0]
 
 # Streamlit UI
 choice = st.sidebar.selectbox("Select your choice", ["Home", "Lumina-2"])
@@ -36,6 +40,7 @@ if choice == "Home":
 elif choice == "Lumina-2":
     st.subheader("Image generation using Lumina-2")
     input_prompt = st.text_input("Enter your text prompt")
+
     if input_prompt:
         if st.button("Generate Image"):
             st.info("Generating image...")
