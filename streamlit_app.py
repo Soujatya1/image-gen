@@ -7,10 +7,9 @@ from diffusers import DiffusionPipeline
 
 load_dotenv()
 
-# Function to Generate AI Images Using Lumina-2
 def generate_images_using_lumina2(text):
     pipe = DiffusionPipeline.from_pretrained("Alpha-VLLM/Lumina-Image-2.0")
-    pipe.enable_model_cpu_offload()  # Offload model to CPU if GPU memory is limited
+    pipe.enable_model_cpu_offload()
     image = pipe(
         text,
         height=1024,
