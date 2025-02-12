@@ -9,7 +9,7 @@ load_dotenv()
 
 def generate_images_using_lumina2(text):
     pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0")
-    pipe.to("cuda)
+    pipe.to("cuda")
     image = pipe(
         text,
         height=1024,
