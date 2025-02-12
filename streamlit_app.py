@@ -8,8 +8,8 @@ from diffusers import DiffusionPipeline
 load_dotenv()
 
 def generate_images_using_lumina2(text):
-    pipe = DiffusionPipeline.from_pretrained("stable-diffusion-v1-5/stable-diffusion-v1-5")
-    pipe.enable_model_cpu_offload()
+    pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0")
+    pipe.to("cuda)
     image = pipe(
         text,
         height=1024,
